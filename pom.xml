@@ -30,6 +30,11 @@
         <java.version>17</java.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.vivekt</groupId>
+            <artifactId>kt-data-model</artifactId>
+            <version>1.1.0</version>
+        </dependency>
         <!-- Spring Boot Starter Web for REST API support -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
