@@ -1,8 +1,10 @@
 package com.vivekt.ktpp.controller;
 
 import com.vivekt.ktpp.DataModelMock;
+import com.vivekt.ktpp.KafkaService;
 import com.vivekt.ktpp.datamodel.Execution;
 import com.vivekt.ktpp.datamodel.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,9 @@ import java.util.List;
 public class DataPublisherController {
     DataModelMock dataModelService = new DataModelMock();
 
+    @Autowired
+    KafkaService kafkaService;
+
     @GetMapping("v")
     public ResponseEntity<Order> version() {
         Order order = Order.builder().orderId("1").symbol("Google").Quantity(100).Side("sell").build();
@@ -25,6 +30,7 @@ public class DataPublisherController {
     @PostMapping("gen/orders")
     public ResponseEntity<List<Order>> publishOrders(@RequestParam Integer count) {
         List<Order> generatedOrders = dataModelService.generateOrders(count);
+        kafkaService.publishOrderList(generatedOrders);
         return ResponseEntity.ok(generatedOrders);
     }
 
